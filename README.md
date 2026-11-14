@@ -26,7 +26,7 @@ people in charge of every final answer.
 **Built with:** Python, Playwright, Amazon Nova (AWS Bedrock), GitHub Actions, GitHub Pages, Leaflet.
 **Cost:** about $3.64 per full check of every hospital website.
 
-Built for the **AI for Health Equity Design Sprint** (Columbia University, November 2026) with the
+🏆 **Winner of Columbia University's 2026 AI for Health Equity Design Sprint**, built with the
 **Community Service Society of New York**, by Berfin Guzel, Becca Goldrup, Seyoung Lee, Claire Pettengill
 and Didi Sanchez.
 
