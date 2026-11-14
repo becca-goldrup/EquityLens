@@ -29,7 +29,7 @@ import config
 
 # Used for the simple-request fallback: it says plainly what this tool is.
 HONEST_UA = ("HFAL-Tracker/1.0 (hospital financial assistance compliance monitoring; "
-             "+https://github.com/becca-goldrup/HFAL-Tracker)")
+             "+https://github.com/becca-goldrup/EquityLens)")
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/130.0 Safari/537.36")
 

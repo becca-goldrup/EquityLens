@@ -14,7 +14,7 @@ def today() -> str:
 ROOT = Path(__file__).parent
 
 # ---- GitHub -------------------------------------------------------------------
-GITHUB_REPO = "becca-goldrup/HFAL-Tracker"   # used by the dashboard's "For CSS staff" tab
+GITHUB_REPO = "becca-goldrup/EquityLens"   # used by the dashboard's "For CSS staff" tab
 
 # ---- What the public dashboard shows -------------------------------------------
 # "baseline": the public tabs (Overview, Hospitals, Map) keep showing CSS's verified

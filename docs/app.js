@@ -385,7 +385,7 @@ function storageSet(k, v) {
 }
 
 function initStaff() {
-  const repo = state.data.repo || "becca-goldrup/HFAL-Tracker";
+  const repo = state.data.repo || "becca-goldrup/EquityLens";
   $("#run-btn").href = `https://github.com/${repo}/actions/workflows/check.yml`;
   $("#rv-name").value = storageGet("hfal-reviewer", "");
   $("#rv-name").addEventListener("input", (e) => storageSet("hfal-reviewer", e.target.value));
@@ -522,7 +522,7 @@ function reviewItem(i) {
 // "Submit to GitHub": a pre-filled issue that a GitHub workflow applies automatically
 // (.github/workflows/apply-review-issue.yml). Large sets are split so each link stays short enough.
 function issueUrl(batch, part, parts) {
-  const repo = state.data.repo || "becca-goldrup/HFAL-Tracker";
+  const repo = state.data.repo || "becca-goldrup/EquityLens";
   const name = ($("#rv-name").value || "").trim();
   const today = nyToday();
   const payload = { reviewer: name, submitted: today, dataset: state.staffKey, data_generated: state.data.generated,
@@ -564,7 +564,7 @@ function renderUnreachable() {
   const sites = state.data.unreachable || [];
   if (!sites.length) { box.hidden = true; box.innerHTML = ""; return; }
   box.hidden = false;
-  const repo = state.data.repo || "becca-goldrup/HFAL-Tracker";
+  const repo = state.data.repo || "becca-goldrup/EquityLens";
   const open = sites.filter((x) => !x.confirmed).length;
   // Collapsible; starts open while something still needs confirming, and remembers the choice.
   const isOpen = state.unreachOpen ?? open > 0;
@@ -1061,7 +1061,7 @@ function renderLog() {
   $("#sub-log-count").textContent = all.length ? String(all.length) : "";
   const q = ($("#log-q").value || "").trim().toLowerCase();
   const rows = all.filter((x) => !q || `${x.hospitals.join(" ")} ${x.requirement} ${x.reviewer} ${x.note}`.toLowerCase().includes(q));
-  const repo = state.data.repo || "becca-goldrup/HFAL-Tracker";
+  const repo = state.data.repo || "becca-goldrup/EquityLens";
   const word = (v) => ({ yes: "Meets", no: "Falls short", review: "Needs review", unknown: "No data", confirmed: "Confirmed" }[v] || v || "");
   if (!all.length) {
     $("#log-root").innerHTML = `<p class="empty">No staff decisions have been applied to this check yet. They appear here a few minutes after someone selects Submit.</p>`;
@@ -1114,7 +1114,7 @@ function renderPublish() {
 }
 
 function publishUrl(key, label) {
-  const repo = state.data.repo || "becca-goldrup/HFAL-Tracker";
+  const repo = state.data.repo || "becca-goldrup/EquityLens";
   const name = ($("#rv-name") && $("#rv-name").value || "").trim();
   const today = nyToday();
   const payload = { reviewer: name, submitted: today, publish: key, decisions: [] };

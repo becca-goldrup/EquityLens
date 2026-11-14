@@ -1,32 +1,57 @@
-# HFAL Compliance Tracker: Part 1 (the checker)
+# EquityLens
 
-This is a tool for the AI for Health Equity Design Sprint (CSSNY challenge). It visits each New York
-hospital's financial assistance page, reads the posted documents, grades them against the
-CSS rubric (17 yes/no criteria), and writes the results into a copy of the CSS spreadsheet.
-Anything the AI can't find or isn't sure about is marked **REVIEW** for a person to check.
+**An AI-assisted tracker of how New York hospitals comply with the state's Hospital Financial Assistance Law, with CSS staff making the final call.**
 
-Part 2 (the dashboard and map) will read `data/output/hospitals.csv`, which this tool produces.
+### [→ View the live dashboard](https://becca-goldrup.github.io/EquityLens/)
+
+[![The EquityLens dashboard: grade distribution and key numbers for 212 New York hospitals](docs/img/dashboard-overview.jpg)](https://becca-goldrup.github.io/EquityLens/)
+
+New York law requires hospitals to help patients with incomes up to 400% of the federal poverty level, and to
+post clear, complete financial assistance materials. Checking 212 hospitals against 17 legal requirements by hand
+is slow, and hospitals change their documents all the time. EquityLens does the first pass automatically and keeps
+people in charge of every final answer.
+
+- **Automated monitoring.** Visits every hospital's financial assistance page, reads the posted documents, and
+  grades them against the Community Service Society of New York's 17-requirement rubric, monthly or on demand.
+- **Evidence you can check.** The AI never types quotes: it points to numbered sentences, and our own code shows
+  staff the exact text. Anything it can't prove goes to a person instead of being guessed.
+- **Human in the loop.** CSS staff review flagged items, correct any answer, and decide when results go public,
+  all from a private tab with no coding. Every decision is logged.
+- **Public transparency.** A searchable dashboard and statewide map, with plain-language grades and a Spanish option.
+
+| Statewide map | Data health (CSS staff) |
+|---|---|
+| [![Map of New York hospitals colored by grade](docs/img/dashboard-map.jpg)](https://becca-goldrup.github.io/EquityLens/#map) | [![Staff view showing how each AI answer was decided](docs/img/staff-data-health.jpg)](https://becca-goldrup.github.io/EquityLens/#staff/health) |
+
+**Built with:** Python, Playwright, Amazon Nova (AWS Bedrock), GitHub Actions, GitHub Pages, Leaflet.
+**Cost:** about $3.64 per full check of every hospital website.
+
+Built for the **AI for Health Equity Design Sprint** (Columbia University, November 2026) with the
+**Community Service Society of New York**, by Berfin Guzel, Becca Goldrup, Seyoung Lee, Claire Pettengill
+and Didi Sanchez.
+
+---
 
 ## How it works
 
 ```
- Spreadsheet ──► 1. FETCH ──────► 2. GRADE ───────► 3. VERIFY ──────────► 4. WRITE
- (HFA links)     open each page   Claude reads all   every quote checked   new dated .xlsx
-                 in a real        docs, answers      against the source;   + Review Queue
-                 browser, save    each criterion     unsure/unproven ->    + Change Log
-                 PDFs/Word/pages  with exact quotes  REVIEW                + hospitals.csv
+ Spreadsheet ──► 1. FETCH ──────► 2. GRADE ────────► 3. VERIFY ─────────► 4. STAFF ──────► 5. PUBLISH
+ (CSS tracker)   open each page   Amazon Nova reads  every cited sentence  settle flags,    public tabs
+                 in a real        all documents and  checked against the   correct any      change only
+                 browser, save    answers 17 yes/no  source; unproven ->   answer, confirm  when staff
+                 PDFs/Word/pages  questions, citing  REVIEW for a person   blocked sites    publish
+                                  sentence numbers
 ```
 
-* **Shared pages are checked once.** 212 hospitals share 98 unique financial assistance pages.
+* **Shared pages are checked once.** 212 hospitals share 92 unique financial assistance pages.
 * **It follows the CSS methodology.** Application criteria are judged from the application only,
   summary criteria from the summary only, and conflicts between documents go in "Inconsistency notes".
-* **It guards against hallucination.** A cell only gets `yes` or `no` if Claude was confident, every quote it gave
-  is actually found in the downloaded document, and the evidence came from the right
-  document. "This document isn't posted" is always sent to a human, because the document might
-  be on a page the crawler didn't reach. The rules are in [hfal/verify.py](hfal/verify.py).
-* **Monthly re-runs are cheap.** If a website's documents haven't changed, that hospital is skipped
-  and any fixes a reviewer made are kept.
-* **Your original spreadsheet is never modified.**
+* **It guards against made-up answers.** A cell only gets `yes` or `no` if the sentences the AI cites really exist
+  in the downloaded documents, come from the right document, and nothing contradicts them. "This document isn't
+  posted" always goes to a person, because it might be on a page the crawler didn't reach. The rules are in
+  [hfal/verify.py](hfal/verify.py).
+* **Monthly re-runs are cheap.** If a website's documents haven't changed, it's skipped, and staff decisions are kept.
+* **CSS's original spreadsheet is never modified.** Each check writes a new dated copy.
 
 ## Files
 
@@ -201,7 +226,7 @@ Then open <http://localhost:8765>.
 
 **Turn on GitHub Pages (one time):** in the repository on github.com, go to **Settings → Pages**. Under
 "Build and deployment", choose **Deploy from a branch**, select branch **main** and folder **/docs**, then select **Save**.
-The site appears at `https://becca-goldrup.github.io/HFAL-Tracker/`.
+The site appears at `https://becca-goldrup.github.io/EquityLens/`.
 
 ## For the CSS team: running checks and reviewing flagged items
 
